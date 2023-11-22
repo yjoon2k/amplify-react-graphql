@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
 import { Amplify } from "aws-amplify";
-import { uploadData, getUrl, remove, getProperties } from "aws-amplify/storage";
+import { uploadData, remove, getProperties } from "aws-amplify/storage";
 import config from "./amplifyconfiguration.json";
 import { generateClient } from "aws-amplify/api";
 import {
@@ -15,10 +15,10 @@ import {
   View,
   withAuthenticator,
 } from "@aws-amplify/ui-react";
-import { listTodos } from "./graphql/queries";
+import { listNotes } from "./graphql/queries";
 import {
-  createTodo as createNoteMutation,
-  deleteTodo as deleteNoteMutation,
+  createNote as createNoteMutation,
+  deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
 
 Amplify.configure(config);
@@ -33,8 +33,8 @@ const App = ({ signOut }) => {
   }, []);
 
   async function fetchNotes() {
-    const apiData = await client.graphql({ query: listTodos });
-    const notesFromAPI = apiData.data.listTodos.items;
+    const apiData = await client.graphql({ query: listNotes });
+    const notesFromAPI = apiData.data.listNotes.items;
     await Promise.all(
       notesFromAPI.map(async (note) => {
         if (note.image) {
